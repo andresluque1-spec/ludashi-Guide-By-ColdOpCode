@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Winlator Ludashi Setup Guide</title>
+<style>
+  :root{
+    --bg:#0d0f0a;
+    --panel:#14180f;
+    --line:#262c1e;
+    --text:#e8e6dd;
+    --dim:#8d9682;
+    --accent:#9bd13d;
+    --accent-dim:#5d7a2e;
+    --warn:#e0a73c;
+    --mono: 'SF Mono', 'Consolas', 'Menlo', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:740px;margin:0 auto;padding:28px 18px 90px;}
+
+  header{margin-bottom:22px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:26px;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .sub{color:var(--dim);font-size:14px;margin:0 0 14px;}
+
+  .banner{
+    border:1px solid #4a3a1a;
+    background:rgba(224,167,60,0.08);
+    border-radius:8px;
+    padding:12px 14px;
+    font-size:13.5px;
+    color:#e0c98c;
+    margin-bottom:18px;
+    line-height:1.5;
+  }
+  .banner b{color:var(--warn);}
+
+  .section-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--dim);
+    margin:28px 0 10px;
+    padding-top:6px;
+    border-top:1px solid var(--line);
+  }
+  .section-label:first-of-type{border-top:none;margin-top:0;}
+
+  .progress-bar{
+    height:4px;background:var(--line);border-radius:2px;margin:18px 0 26px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;background:var(--accent);width:0%;
+    transition:width .25s ease;
+  }
+  .progress-label{
+    font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:-22px;margin-bottom:24px;text-align:right;
+  }
+
+  .step{
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:12px;
+    background:var(--panel);
+    overflow:hidden;
+  }
+  .step.done{border-color:var(--accent-dim);}
+
+  .step-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 16px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .check{
+    flex:0 0 22px;
+    width:22px;height:22px;
+    border-radius:50%;
+    border:1.5px solid var(--dim);
+    margin-top:1px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    color:transparent;
+    transition:all .15s ease;
+  }
+  .step.done .check{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#0d0f0a;
+  }
+  .step-title-wrap{flex:1;}
+  .step-num{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--dim);
+    letter-spacing:.06em;
+  }
+  .step-title{
+    font-size:15.5px;
+    font-weight:600;
+    margin-top:2px;
+  }
+  .step.done .step-title{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--accent-dim);}
+
+  .chevron{
+    color:var(--dim);
+    font-size:13px;
+    margin-top:2px;
+    transition:transform .2s ease;
+  }
+  .step.open .chevron{transform:rotate(90deg);}
+
+  .step-body{
+    display:none;
+    padding:0 16px 18px 52px;
+    color:var(--dim);
+    font-size:14px;
+  }
+  .step.open .step-body{display:block;}
+
+  .step-body p{margin:0 0 10px;}
+  .step-body code, .inline-code{
+    font-family:var(--mono);
+    background:#0a0c07;
+    border:1px solid var(--line);
+    color:var(--accent);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:12.5px;
+    word-break:break-all;
+  }
+  pre{
+    font-family:var(--mono);
+    background:#0a0c07;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 14px;
+    color:var(--text);
+    font-size:12.5px;
+    overflow-x:auto;
+    margin:0 0 10px;
+  }
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-dim);}
+
+  .note{
+    border-left:2px solid var(--accent-dim);
+    padding:8px 12px;
+    font-size:13px;
+    background:rgba(155,209,61,0.06);
+    border-radius:0 6px 6px 0;
+    margin-top:10px;
+  }
+  .note b{color:var(--accent);}
+  .warn-note{
+    border-left:2px solid var(--warn);
+    padding:8px 12px;
+    font-size:13px;
+    background:rgba(224,167,60,0.07);
+    border-radius:0 6px 6px 0;
+    margin-top:10px;
+  }
+  .warn-note b{color:var(--warn);}
+
+  table.linktable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px;}
+  table.linktable td{border-bottom:1px solid var(--line);padding:6px 4px;vertical-align:top;}
+  table.linktable td:first-child{color:var(--text);white-space:nowrap;padding-right:10px;}
+
+  footer{
+    text-align:center;
+    color:var(--dim);
+    font-size:12px;
+    margin-top:30px;
+    font-family:var(--mono);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">PC-to-Android Emulation · Setup Guide</div>
+    <h1>Winlator Ludashi — Full Setup</h1>
+    <p class="sub">Run Windows PC games on Android via a virtual Windows container. Tap a step to expand, tap the circle to check it off.</p>
+  </header>
+
+  <div class="banner">
+    <b>Heads up:</b> the driver section (steps 5–8) in this guide is written for <b>Snapdragon</b> chips. If your device is MediaTek/Mali, the driver picks will differ — the original guide author noted a MediaTek version was still in progress at time of writing.
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 0 done</div>
+
+  <div id="steps"></div>
+
+  <footer>Reconstructed from a Discord thread guide · double-check links before downloading</footer>
+</div>
+
+<script>
+const sections = [
+  {
+    label: "Part 1 · Check your chip",
+    steps: [
+      {
+        title: "Identify your processor",
+        body: `<p>Performance depends heavily on your SoC. Snapdragon generally performs best for this; MediaTek works but needs more headroom.</p>
+               <p>Install <a href="https://play.google.com/store/apps/details?id=flar2.devcheck" target="_blank">DevCheck</a> from the Play Store to see your exact chip.</p>
+               <table class="linktable">
+                 <tr><td>Snapdragon (no stars)</td><td>865, 870, 888, 8 Gen 1</td></tr>
+                 <tr><td>Snapdragon ⭐</td><td>8+ Gen 1</td></tr>
+                 <tr><td>Snapdragon ⭐⭐</td><td>8 Gen 2</td></tr>
+                 <tr><td>Snapdragon ⭐⭐⭐</td><td>8 Gen 3</td></tr>
+                 <tr><td>Snapdragon 👑</td><td>8 Elite</td></tr>
+                 <tr><td>MediaTek</td><td>Dimensity 7300, 8200</td></tr>
+                 <tr><td>MediaTek ⭐</td><td>Dimensity 8300 / 8300 Ultra</td></tr>
+                 <tr><td>MediaTek ⭐⭐</td><td>Dimensity 9200 / 9200+</td></tr>
+               </table>
+               <div class="note"><b>Note:</b> more stars = stronger chip = better game compatibility and performance. This isn't going to run Cyberpunk 2077 — older/lighter PC games are the realistic target.</div>`
+      }
+    ]
+  },
+  {
+    label: "Part 2 · Install Winlator",
+    steps: [
+      {
+        title: "Download Winlator Ludashi",
+        body: `<p>Winlator creates a virtual Windows container that runs your games — it's a safe, well-known community tool.</p>
+               <p>Get it here: <a href="https://github.com/StevenMXZ/Winlator-Ludashi/releases" target="_blank">github.com/StevenMXZ/Winlator-Ludashi/releases</a></p>
+               <div class="warn-note"><b>Important:</b> your games need to be in <span class="inline-code">folder</span> format (the way they'd look installed on a real Windows PC) — not a single installer .exe.</div>`
+      },
+      {
+        title: "Create a new container",
+        body: `<p>Open Winlator Ludashi and tap the <span class="inline-code">+</span> button in the top-right corner. This is the virtual Windows environment your game will live in.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 3 · Configure the container (General tab)",
+    steps: [
+      {
+        title: "Set name, resolution, core options",
+        body: `<p>On the <b>General</b> tab, set these fields:</p>
+               <table class="linktable">
+                 <tr><td>Name</td><td>Your game's name</td></tr>
+                 <tr><td>Screen Size</td><td><span class="inline-code">1280x720 (16:9)</span> — keep this</td></tr>
+                 <tr><td>Wine Version</td><td><span class="inline-code">proton-9.0-arm64ec</span> (default)</td></tr>
+                 <tr><td>Graphics Driver</td><td><span class="inline-code">Wrapper</span></td></tr>
+                 <tr><td>DX Wrapper</td><td><span class="inline-code">DXVK+VKD3D</span></td></tr>
+                 <tr><td>Renderer</td><td><span class="inline-code">Vulkan</span></td></tr>
+                 <tr><td>Audio Driver</td><td><span class="inline-code">ALSA</span> for now (changes later)</td></tr>
+                 <tr><td>64bit / 32bit Emulator</td><td><span class="inline-code">FEXCore</span> (both)</td></tr>
+               </table>`
+      },
+      {
+        title: "(Optional) Install Proton 10",
+        body: `<p>Proton 9 (arm64ec) is the default Wine version, but Proton 10 is newer. In the Wine Version section you can download and select Proton 10 instead — both are listed as "Installed" options once downloaded.</p>
+               <div class="note"><b>Tip:</b> stick with the default first; only switch to Proton 10 if a game specifically needs it.</div>`
+      }
+    ]
+  },
+  {
+    label: "Part 4 · Graphics driver (Drivers tab)",
+    steps: [
+      {
+        title: "Pick the right Turnip/Adreno driver for your chip",
+        body: `<p>Go to the <b>Drivers</b> tab. You'll manually install the best driver for your specific Snapdragon Adreno GPU.</p>
+               <table class="linktable">
+                 <tr><td>Adreno 8XX</td><td>
+                   <a href="https://github.com/whitebelyash/AdrenoToolsDrivers/releases" target="_blank">whitebelyash/AdrenoToolsDrivers</a><br>
+                   <a href="https://github.com/StevenMXZ/Adreno-Tools-Drivers/releases/tag/v32" target="_blank">StevenMXZ/Adreno-Tools-Drivers v32</a>
+                 </td></tr>
+                 <tr><td>Adreno 6XX / 7XX</td><td>
+                   <a href="https://github.com/StevenMXZ/Adreno-Tools-Drivers/releases/tag/v26.2.0-R6" target="_blank">v26.2.0-R6</a><br>
+                   <a href="https://github.com/StevenMXZ/Adreno-Tools-Drivers/releases/tag/v26.2.0-R7" target="_blank">v26.2.0-R7</a>
+                 </td></tr>
+                 <tr><td>Adreno 710/720/722 only</td><td>
+                   <a href="https://github.com/Vauzi-17/710/releases/tag/2.6.2" target="_blank">Vauzi-17/710 v2.6.2</a>
+                 </td></tr>
+               </table>
+               <p>Download the right .zip for your device and install it from inside the Drivers tab.</p>
+               <div class="note"><b>Not sure which one?</b> The original guide author offered to look it up for people directly — if you're stuck, posting your exact chip model in a relevant community/help channel works the same way.</div>`
+      },
+      {
+        title: "Apply the driver under Graphics Driver",
+        body: `<p>Go back to the <b>General</b> tab. Next to <span class="inline-code">Wrapper</span> (Graphics Driver), tap the icon on the right and select the driver you just installed.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 5 · DXVK files",
+    steps: [
+      {
+        title: "Download the DXVK pack",
+        body: `<p>This pack bundles all the DXVK/VKD3D versions you might need:</p>
+               <p><a href="https://gofile.io/d/tfnyCr" target="_blank">gofile.io/d/tfnyCr</a> — <span class="inline-code">DXVK_ALL.zip</span> (69.6 MB)</p>
+               <p>Download and unzip it. You'll see a list of files like <span class="inline-code">dxvk-2.6.2.wcp</span> and <span class="inline-code">dxvk-gplasync-2.6.2-1.wcp</span>.</p>
+               <div class="note"><b>You don't need all of them.</b> Start with the <b>highest numbered</b> version — it's the most up to date. If a game has issues, try a lower number. The <span class="inline-code">gplasync</span> variants are tuned to reduce stuttering/lag.</div>`
+      },
+      {
+        title: "Install the DXVK files",
+        body: `<p>Back in the General tab, next to <span class="inline-code">DXVK+VKD3D</span>, tap the icon on the right to open DXVK Configuration. Manually install the files from the pack — installing all of them is fine since it's "just in case."</p>
+               <p>Then select one version to actually use, e.g. <span class="inline-code">DXVK 2.6.2</span> or <span class="inline-code">2.5.3</span>.</p>
+               <div class="note"><b>Older device?</b> Lean toward an older DXVK version — it's the safer/more stable choice.</div>`
+      },
+      {
+        title: "Set Vulkan version + Graphics Driver version",
+        body: `<p>Where it says <span class="inline-code">Vulkan</span>, tap the icon on the right again to open Graphics Driver Configuration.</p>
+               <p>To find your supported Vulkan version: open the <b>DevCheck</b> app from Part 1, go to the Hardware tab, scroll down to find your Vulkan version, then select it here.</p>
+               <p>Also confirm the matching Graphics Driver Version (e.g. <span class="inline-code">710, 720 & 722 v2.6.2</span>) is selected.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 6 · Audio",
+    steps: [
+      {
+        title: "Switch Audio Driver to PulseAudio",
+        body: `<p>Still on the General tab, change <b>Audio Driver</b> from ALSA to <span class="inline-code">PulseAudio</span> — this is the recommended setting for better compatibility.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 7 · Point Winlator to your game",
+    steps: [
+      {
+        title: "Add your game folder as a Drive",
+        body: `<p>Still without switching tabs, scroll to the bottom of General and find the <b>Drives</b> section. Tap the folder icon next to a drive letter (e.g. <span class="inline-code">F:</span>) and select the folder where your game is installed.</p>
+               <p>Example: <span class="inline-code">F: → /storage/emulated/0</span></p>`
+      },
+      {
+        title: "Leave CPU affinity as default (Advanced tab)",
+        body: `<p>Go to the <b>Advanced</b> tab. Scroll all the way down to <b>Processor Affinity</b> and leave all CPUs checked as default — including the separate <b>Processor Affinity (32-bit apps)</b> row.</p>
+               <div class="note"><b>Don't overthink this part</b> — default/all-checked is the safe choice unless you're specifically troubleshooting performance later.</div>`
+      },
+      {
+        title: "Save the container",
+        body: `<p>Tap the big checkmark ✅ to finish — your container is now created and ready for your first game.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 8 · Launch and create a shortcut",
+    steps: [
+      {
+        title: "Open the container",
+        body: `<p>Press the ▶ play button on your container. You'll land in something that looks like a basic Windows file explorer, already pointed at your game's install folder (via the drive you mapped earlier).</p>`
+      },
+      {
+        title: "Create a shortcut to the .EXE",
+        body: `<p>Select your game's <span class="inline-code">.EXE</span> file with your mouse/tap, then press the <span class="inline-code">MRB</span> button (this acts as a right-click) and choose <b>Create Shortcut</b>.</p>
+               <p>You can now leave the container — a shortcut for your game now sits in the Winlator Ludashi shortcuts list, and you can launch straight into it from there next time.</p>`
+      }
+    ]
+  },
+  {
+    label: "Part 9 · In-game controls & display",
+    steps: [
+      {
+        title: "Set up controls",
+        body: `<p>Once inside the game, open the side menu and go to <b>Controls</b>. You have two main options:</p>
+               <table class="linktable">
+                 <tr><td>RTS</td><td>Acts like a real keyboard — you can remap every button's position by tapping the gear icon.</td></tr>
+                 <tr><td>Virtual Gamepad</td><td>Activates an on-screen controller. Modern games typically detect it as a normal gamepad automatically.</td></tr>
+               </table>`
+      },
+      {
+        title: "Fix fullscreen / widescreen issues",
+        body: `<p>If your game isn't filling the screen, open the side menu → <b>Display and Effects</b> → <span class="inline-code">Toggle Fullscreen</span>.</p>
+               <p>If the game is older and only renders in a tiny window even after that, it likely doesn't natively support widescreen. Most older games have community-made widescreen patches available online — download one and drop it into your game's folder.</p>`
+      }
+    ]
+  }
+];
+
+// Flatten with section markers for rendering
+const flat = [];
+sections.forEach(sec => {
+  flat.push({ type: 'label', text: sec.label });
+  sec.steps.forEach(s => flat.push({ type: 'step', data: s, open: false, done: false }));
+});
+
+const container = document.getElementById('steps');
+const fill = document.getElementById('fill');
+const progressLabel = document.getElementById('progressLabel');
+
+let stepCounter = 0;
+const totalSteps = flat.filter(f => f.type === 'step').length;
+
+function render(){
+  container.innerHTML = '';
+  let idx = 0;
+  flat.forEach((item) => {
+    if(item.type === 'label'){
+      const lbl = document.createElement('div');
+      lbl.className = 'section-label';
+      lbl.textContent = item.text;
+      container.appendChild(lbl);
+      return;
+    }
+    const s = item.data;
+    idx++;
+    const el = document.createElement('div');
+    el.className = 'step' + (item.open ? ' open' : '') + (item.done ? ' done' : '');
+    el.innerHTML = `
+      <div class="step-head" data-idx="${item._i}" data-action="toggle">
+        <div class="check" data-idx="${item._i}" data-action="check">${item.done ? '✓' : ''}</div>
+        <div class="step-title-wrap">
+          <div class="step-num">STEP ${String(idx).padStart(2,'0')} / ${totalSteps}</div>
+          <div class="step-title">${s.title}</div>
+        </div>
+        <div class="chevron">▸</div>
+      </div>
+      <div class="step-body">${s.body}</div>
+    `;
+    container.appendChild(el);
+  });
+  updateProgress();
+}
+
+// assign stable indices
+flat.forEach((item, i) => item._i = i);
+
+function updateProgress(){
+  const doneCount = flat.filter(f => f.type === 'step' && f.done).length;
+  fill.style.width = (doneCount / totalSteps * 100) + '%';
+  progressLabel.textContent = `${doneCount} / ${totalSteps} done`;
+}
+
+container.addEventListener('click', (e) => {
+  const checkEl = e.target.closest('[data-action="check"]');
+  const headEl = e.target.closest('[data-action="toggle"]');
+  if(checkEl){
+    const i = +checkEl.dataset.idx;
+    flat[i].done = !flat[i].done;
+    e.stopPropagation();
+    render();
+    return;
+  }
+  if(headEl){
+    const i = +headEl.dataset.idx;
+    flat[i].open = !flat[i].open;
+    render();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
